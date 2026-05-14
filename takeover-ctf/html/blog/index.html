@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Ciskom Blog • Halaman kosong</title>
+  <style>
+    /* Reset minimal & halaman benar-benar kosong selain teks */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #06061a;  /* latar gelap yang sama seperti sebelumnya */
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      /* Tidak ada elemen dekoratif lain, hanya tulisan */
+      overflow: hidden;
+    }
+
+    /* Tidak ada canvas bintang, tidak ada navbar, footer, dsb. 
+       Hanya pesan "halaman kosong sengaja" */
+    .empty-message {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      animation: gentlePulse 2.8s ease-in-out infinite alternate;
+    }
+
+    .empty-text {
+      font-size: clamp(2.2rem, 8vw, 4.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: #ffffff;
+      /* Efek tipis gradient agar tidak terlalu flat */
+      background: linear-gradient(180deg, #eef2ff 0%, #a5b4fc 85%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+      text-shadow: 0 0 12px rgba(129, 140, 248, 0.4);
+      margin-bottom: 0.5rem;
+    }
+
+    .sub-hint {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(180, 190, 230, 0.65);
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(3px);
+      padding: 0.3rem 1.6rem;
+      border-radius: 40px;
+      display: inline-block;
+      margin-top: 0.8rem;
+      border: 1px solid rgba(120, 120, 255, 0.15);
+    }
+
+    @keyframes gentlePulse {
+      0% {
+        opacity: 0.85;
+        transform: scale(0.99);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1.01);
+      }
+    }
+
+    /* Pastikan tidak ada canvas atau elemen lain yang muncul */
+    canvas, nav, header, .posts, footer {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Hanya teks "halaman kosong sengaja" yang muncul.
+       Tidak ada canvas, tidak ada navigasi, tidak ada konten blog. -->
+  <div class="empty-message">
+    <div class="empty-text">halaman kosong sengaja</div>
+    <div class="sub-hint">ciskom · pnc</div>
+  </div>
+
+  <!-- Tidak ada script tambahan, tidak ada bintang, benar-benar kosong sesuai permintaan -->
+</body>
+</html>

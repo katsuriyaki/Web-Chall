@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Ciskom Support • kerja</title>
+  <style>
+    /* Reset total, hanya menampilkan teks "kerja kerja kerja" */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #06061a;  /* latar gelap yang konsisten dengan subdomain lain */
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      /* Tidak ada elemen visual lain selain teks */
+    }
+
+    /* Tidak ada canvas, navbar, hero, notice, faq, footer.
+       Hanya pesan "kerja kerja kerja" */
+    .work-message {
+      text-align: center;
+      padding: 2rem 2rem;
+      animation: subtleBreathe 3s ease-in-out infinite alternate;
+    }
+
+    .work-text {
+      font-size: clamp(2.8rem, 11vw, 6rem);
+      font-weight: 850;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: #ffffff;
+      /* Gradient lembut khas Ciskom */
+      background: linear-gradient(180deg, #f1f5ff 0%, #a5b4fc 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.55));
+      text-shadow: 0 0 18px rgba(129, 140, 248, 0.5);
+      margin-bottom: 0.4rem;
+      text-transform: lowercase; /* sesuai request "kerja kerja kerja" */
+    }
+
+    .accent-dot {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(200, 210, 240, 0.65);
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(4px);
+      padding: 0.3rem 1.8rem;
+      border-radius: 40px;
+      display: inline-block;
+      margin-top: 0.6rem;
+      border: 1px solid rgba(120, 120, 255, 0.15);
+    }
+
+    @keyframes subtleBreathe {
+      0% {
+        opacity: 0.85;
+        transform: scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1.02);
+      }
+    }
+
+    /* Sembunyikan elemen lain yang mungkin tersisa (canvas, nav, dsb.) */
+    canvas, nav, header, .hero, .notice, .faq, footer {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Hanya teks "kerja kerja kerja" yang muncul.
+       Tidak ada canvas bintang, tidak ada navigasi, tidak ada konten support. -->
+  <div class="work-message">
+    <div class="work-text">kerja kerja kerja</div>
+    <div class="accent-dot">ciskom · support</div>
+  </div>
+
+  <!-- Tidak ada JavaScript, benar-benar halaman statis kosong dengan teks -->
+</body>
+</html>

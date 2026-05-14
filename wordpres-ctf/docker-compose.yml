@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  blog-ctf:
+    build: .
+    container_name: blog-ctf
+    hostname: blog
+    privileged: true   # needed for SUID binary & samba
+    ports:
+      - "22:22"     # SSH
+      - "80:80"     # HTTP WordPress
+      - "139:139"   # SMB NetBIOS
+      - "4455:445"   # SMB
+    restart: unless-stopped

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Ciskom • Takeover</title>
+  <style>
+    /* Reset minimal & background kosong */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #06061a;  /* warna gelap sama seperti sebelumnya, tapi bisa juga #000 */
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+      /* tidak ada konten lain selain teks */
+    }
+
+    /* Canvas bintang tidak ditampilkan — kosong total, hanya latar */
+    /* Tidak ada nav, hero, card, footer, hanya teks takeover */
+
+    .takeover-message {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 2rem;
+      animation: fadeGlow 2.2s ease-in-out infinite alternate;
+    }
+
+    .takeover-text {
+      font-size: clamp(2.8rem, 10vw, 5.5rem);
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: #ffffff;
+      text-shadow: 0 0 18px rgba(168, 180, 255, 0.65), 0 0 35px rgba(129, 140, 248, 0.5);
+      background: linear-gradient(180deg, #f0f4ff 0%, #a5b4fc 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+      margin-bottom: 0.25rem;
+    }
+
+    .sub-tag {
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(200, 210, 255, 0.7);
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(4px);
+      padding: 0.4rem 1.4rem;
+      border-radius: 60px;
+      display: inline-block;
+      margin-top: 0.8rem;
+      border: 1px solid rgba(129, 140, 248, 0.25);
+    }
+
+    @keyframes fadeGlow {
+      0% {
+        opacity: 0.9;
+        filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.5));
+      }
+      100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 22px rgba(129, 140, 248, 0.85));
+      }
+    }
+
+    /* Tidak ada canvas bintang, tidak ada elemen lain */
+    /* Dipastikan body hanya menampilkan teks */
+  </style>
+</head>
+<body>
+  <!-- Tidak ada canvas, tidak ada navbar, tidak ada section apapun.
+       Hanya teks "Takeover domain" sesuai permintaan -->
+  <div class="takeover-message">
+    <div class="takeover-text">Takeover domain</div>
+    <div class="sub-tag">ciskom • pnc</div>
+  </div>
+
+  <!-- Tidak ada script tambahan, hanya UI kosong dengan teks -->
+</body>
+</html>

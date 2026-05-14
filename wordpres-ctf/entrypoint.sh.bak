@@ -1,0 +1,177 @@
+#!/bin/bash
+set -e
+
+echo "[*] Setar WEB CTF setup..."
+
+# ─── MySQL ───────────────────────────────────────────────
+service mysql start
+sleep 3
+
+mysql -u root <<SQL
+CREATE DATABASE IF NOT EXISTS wpcyscom;
+CREATE USER IF NOT EXISTS 'wpcyscom'@'localhost' IDENTIFIED BY 'CysComG2024EN@!';
+GRANT ALL PRIVILEGES ON wpcyscom.* TO 'cyscomgen2024'@'localhost';
+FLUSH PRIVILEGES;
+SQL
+
+echo "[+] MySQL ready"
+
+# ─── WordPress Config ────────────────────────────────────
+cd /var/www/html
+
+# Generate wp-config.php
+wp config create \
+    --dbname=wpcyscom \
+    --dbuser=cyscomgen2024 \
+    --dbpass=CysComG2024EN@! \
+    --dbhost=localhost \
+    --allow-root
+
+# Install WordPress
+wp core install \
+    --url="http://cyscom.pnc.ac.id" \
+    --title="Cyscom" \
+    --admin_user="atnan" \
+    --admin_password="AtnanMagwrBangets" \
+    --admin_email="atnan@cyscom.pnc" \
+    --allow-root
+
+echo "[+] WordPress installed"
+
+# ─── WordPress Users ─────────────────────────────────────
+# kwheel = Author (crackable via seclists: Eurovision,greatest1)
+wp user create syam syam@cyscom.pnc \
+    --role=author \
+    --user_pass="Eurovision" \
+    --display_name="Syam Tidwur" \
+    --allow-root
+
+wp user create nura nura@cyscom.pnc \
+    --role=author \
+    --user_pass="greatest1" \
+    --display_name="Nura Turwu" \
+    --allow-root
+
+wp user update atnan \
+    --display_name="Atnan Magerk" \
+    --allow-root
+
+echo "[+] Users created: atnan (admin), syam (author), nura (author)"
+
+# ─── Blog Posts ──────────────────────────────────────────
+SYAM_ID=$(wp user get syam --field=ID --allow-root)
+ATNAN_ID=$(wp user get atnan --field=ID --allow-root)
+NURA_ID=$(wp user get nura --field=ID --allow-root)
+
+wp post create \
+    --post_title="Selamat datang di Web Orang Pemalas" \
+    --post_content="<p>Di malam hari sekitar jam 00:00-03:20 saya mendapat telpon dari perusahaan temapt saya bekerja, karna saya sangat lelah jadi saya tertidur lelap dan tidak mengangkat telpon, bagun di pagi hari jam 07:10 saya membuka hp dan melihat banyak sekali spam telpon dari perusahaan</p><p>- Billy</p>" \
+    --post_status=publish \
+    --post_author=$ATNAN_ID \
+    --allow-root
+
+wp post create \
+    --post_title="Kebocoran data di perusahaan" \
+    --post_content="<p>Saya mendapat info perusahaan saya telah di retas oleh kelompok blackhat bernama Eur0v1s1n, mereka mengacam perusaan saya meminta tebusan sebesar 500 juta agar data perusaahaan tidak di bocorkan ke Public.</p>" \
+    --post_status=publish \
+    --post_author=$SYAM_ID \
+    --allow-root
+
+wp post create \
+    --post_title="Perusaahaan Tidak Mau Bayar" \
+    --post_content="<p>Karna uang yang di minta hacker terlalu besar & tidak ada jaminan kalo perusahaan bayar data tidak akan di sebar, jadi perusaahan saya tidak membayarnya. Sehari kemudian data perusahaan beneran di bocorkan di publik dan di download banyak orang dan data disalahgunakan oleh peretas. Setelah kejadian itu Reputasi perusahaan hancur dan bangkrut, perusahaan pun di tutup.</p>" \
+    --post_status=publish \
+    --post_author=$NURA_ID \
+    --allow-root
+
+# Remove default sample post
+wp post delete 1 --force --allow-root 2>/dev/null || true
+
+echo "[+] Blog posts created"
+
+# ─── Apache Config ───────────────────────────────────────
+cat > /etc/apache2/sites-available/000-default.conf <<'APACHE'
+<VirtualHost *:80>
+    ServerName cyscom.pnc.ac.id
+    DocumentRoot /var/www/html
+
+    <Directory /var/www/html>
+        Options FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+APACHE
+
+a2enmod rewrite
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
+
+# ─── Robots.txt ──────────────────────────────────────────
+cat > /var/www/html/robots.txt <<'ROBOTS'
+User-agent: *
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+Sitemap: http://cyscom.pnc.ac.id/wp-sitemap.xml
+ROBOTS
+
+# ─── System Users ────────────────────────────────────────
+# atnan system user (home dir with fake flag)
+useradd -m -s /bin/bash atnan 2>/dev/null || true
+echo "atnan:AtnanMagwrBangets" | chpasswd
+
+mkdir -p /home/atnan
+# Fake flag (rabbit hole)
+echo "flag{CYSCOM{seseorangtolongberithusayaagartidakmudahtertipu}}" > /home/atnan/user.txt
+chmod 600 /home/atnan/user.txt
+chown atnan:atnan /home/atnan/user.txt
+
+# ─── Real flags ──────────────────────────────────────────
+mkdir -p /media/usb
+echo "CYSCOM{beritahusayacaramenyatakanperasaanyangsudahlamaterpendamkeseseorang}}" > /media/usb/user.txt
+chmod 644 /media/usb/user.txt
+
+echo "CYSCOM{aghhhdiapergisangatjauh1missu}" > /root/root.txt
+chmod 600 /root/root.txt
+
+echo "[+] Flags placed"
+
+# ─── Checker SUID binary ─────────────────────────────────
+if [ -f /opt/checker.c ]; then
+    gcc /opt/checker.c -o /usr/sbin/checker
+    chown root:root /usr/sbin/checker
+    chmod 4755 /usr/sbin/checker
+    echo "[+] checker binary compiled & SUID set"
+fi
+
+# ─── SSH ─────────────────────────────────────────────────
+mkdir -p /var/run/sshd
+sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+echo "AllowUsers atnan" >> /etc/ssh/sshd_config
+service ssh start
+echo "[+] SSH started"
+
+# ─── Samba ───────────────────────────────────────────────
+cp /etc/smb.conf /etc/samba/smb.conf 2>/dev/null || true
+service smbd start
+service nmbd start 2>/dev/null || true
+echo "[+] Samba started"
+
+# ─── Apache start ────────────────────────────────────────
+service apache2 start
+echo "[+] Apache started"
+
+echo ""
+echo "=========================================="
+echo "  WEB CTF udh jdi bozeh"
+echo "  Add to /etc/hosts: 127.0.0.1 cyscom.pnc.ac.id"
+echo "  Visit: http://cyscom.pnc.ac.id"
+echo "=========================================="
+
+# Keep container alive
+tail -f /dev/null
